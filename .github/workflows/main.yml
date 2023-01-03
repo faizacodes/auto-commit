@@ -1,0 +1,27 @@
+name: CI Auto Commit
+on:      
+  schedule:       
+   - cron: "*/5 * * * *"
+jobs:  
+ auto-commit: 
+  runs-on: ubuntu-latest
+  steps:      
+    - uses: actions/checkout@v2
+      with:          
+        persist-credentials: false
+        fetch-depth: 0
+    - name: Update timestamp        
+      run: |
+          d=`date '+%Y-%m-%dT%H:%M:%SZ'`       
+          echo $d > LATEST_UPDATE
+    - name: Commit changes 
+      run: |          
+          git config --local user.email ${{ secrets.USER_EMAIL }}
+          git config --local user.name "faizacodes"
+          git add .
+          arr[0]="Meow"          
+          arr[1]="Prrrrrrr"          
+          arr[2]="Drrrrreow!!!"          
+          arr[3]="Meow... mmm... Meow!!"                    
+          random=$[$RANDOM % ${#arr[@]}].   //<--- Crazy Cat Sounds 🐈 
+          git commit -m "${arr[$random]}" //<-- standard git commit -m
