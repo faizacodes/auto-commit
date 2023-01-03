@@ -6,22 +6,12 @@ jobs:
  auto-commit: 
   runs-on: ubuntu-latest
   steps:      
-    - uses: actions/checkout@v2
-      with:          
-        persist-credentials: false
-        fetch-depth: 0
-    - name: Update timestamp        
-      run: |
-          d=`date '+%Y-%m-%dT%H:%M:%SZ'`       
-          echo $d > LATEST_UPDATE
-    - name: Commit changes 
+    - name: Linting every 10 min        
       run: |          
           git config --local user.email ${{ secrets.USER_EMAIL }}
           git config --local user.name "faizacodes"
-          git add .
-          arr[0]="Meow"          
-          arr[1]="Prrrrrrr"          
-          arr[2]="Drrrrreow!!!"          
-          arr[3]="Meow... mmm... Meow!!"                    
-          random=$[$RANDOM % ${#arr[@]}].   //<--- Crazy Cat Sounds 🐈 
-          git commit -m "${arr[$random]}" //<-- standard git commit -m
+          git remote add origin https://github.com/faizacodes/${{ secrets.REPOSITORY }}
+          git config --global push.default current
+          git remote set-url origin https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/faizacodes/${{ secrets.REPOSITORY }}
+          git commit -am "build: Check Linting"
+          git push
